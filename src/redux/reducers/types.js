@@ -1,0 +1,2 @@
+export const FETCH_VIDEO_GAMES = "FETCH_VIDEO_GAMES";
+export const SEARCH_FILTER = "SEARCH_FILTER";
