@@ -3,7 +3,7 @@ body {
 }
 
 :root {
-    --global-spacing: 60px;
+  --global-spacing: 60px;
 }
 
 h1,
@@ -44,18 +44,15 @@ button.button {
   margin: 20px 0px;
   color: $whiteColour;
 
-  &::after{
+  &::after {
     background-color: $thirdBgColour;
     color: $whiteColour;
-
-
   }
 
   &:focus {
     background-color: $thirdBgColour;
     border: none;
     color: $whiteColour;
-
   }
 }
 
@@ -135,8 +132,6 @@ section {
         &.clear {
           min-height: 60px;
         }
-
-      
       }
     }
 
@@ -210,8 +205,6 @@ input.search {
   }
 }
 
-
-
 div.search-field {
   height: 36px;
   width: 100%;
@@ -229,7 +222,7 @@ input.search {
 }
 
 div.video-item {
-  height: 100px;
+  height: auto;
 
   background-color: $secondaryBgColour;
   margin-bottom: 16px;
@@ -237,6 +230,7 @@ div.video-item {
   flex-direction: row;
   .thumbnail {
     min-width: 90px;
+    height: auto;
 
     background-color: black;
   }
@@ -299,12 +293,37 @@ div.video-item {
 }
 
 @keyframes spin {
-  0%  { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @media only screen and (max-width: 600px) {
   .button {
     width: 100% !important;
+  }
+  div.video-item {
+    flex-direction: column;
+    .thumbnail {
+      height: 90px;
+      width: 100%;
+    }
+
+    .info {
+      display: block;
+
+      .video-title {
+        font-size: 18px !important;
+        font-weight: 600;
+      }
+    }
+    .number {
+      position: absolute;
+      right: 20px;
+      margin-top: 20px;
+    }
   }
 }
