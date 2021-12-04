@@ -137,17 +137,32 @@ section {
 
     * > div.order-by {
       display: flex;
-      height: 160px;
+      height: 60px;
       width: 100%;
 
       .sort-direction {
+        display: flex;
         width: 36px;
         height: 36px;
         background-color: $accentColour;
+
+        i.bi {
+          -webkit-text-stroke: 1.6px white;
+          margin: auto;
+        }
       }
 
       div.dropdown {
         flex-grow: 1;
+        button{
+          width: 100%;
+
+          &::after {
+            position: absolute;
+            right: 10px;
+            margin: 10px auto;
+          }
+        }
         button.dropdown-toggle {
           &.btn-primary {
             border-radius: 0px !important;
@@ -304,6 +319,9 @@ div.video-item {
 @media only screen and (max-width: 600px) {
   .button {
     width: 100% !important;
+  }
+  .dropdown button {
+    width: 100%;
   }
   div.video-item {
     flex-direction: column;
