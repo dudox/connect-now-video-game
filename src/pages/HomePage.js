@@ -9,15 +9,15 @@ class Home extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      feed: [...this.props.feed],
+      feed: this.props.feed,
       loading: true,
-      refresh: [...this.props.feed],
+      refresh: this.props.feed,
     }
   }
 
   componentDidMount() {
-    console.log(this.state)
     setTimeout(() => {
+      this.props.feeds()
       this.setState({ loading: false }) // showing the app
     }, 2000)
   }
@@ -119,11 +119,11 @@ class Home extends Component {
                 height={100}
                 width={100}
               />
-            ) : (
+            ) : this.state.feed ? (
               this.state.feed.map((info, key) => {
                 return <VideoCard info={info} key={key} index={key} />
               })
-            )}
+            ) : null}
           </div>
         </section>
       </section>
