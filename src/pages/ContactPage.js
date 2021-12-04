@@ -5,10 +5,10 @@ class Contact extends Component {
   render() {
     return (
       <section className="row mt-5 justify-content-center align-items-center">
-        <div className="col-md-8">
+        <div className="col-md-7">
           <h1>GET IN TOUCH</h1>
-          <p>
-            T rysail transom furl Sea Legs Scallywag jack Ketch Chandler mizzenmost reef sail
+          <p className="mb-5">
+            Trysail transom furl Sea Legs Scallywag jack Ketch Chandler mizzenmost reef sail
             skysail. Trysail transom furl Sea Legs Scallywag jack Ketch Chandler mizzenmost reef
             sail skysail.
           </p>
