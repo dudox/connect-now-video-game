@@ -12,22 +12,20 @@ const initialState = {
   score: '',
   sort: '',
   icon: 'bi bi-arrow-up',
+  loading: true,
 }
 
 class Home extends Component {
   constructor(props) {
     super(props)
-
     this.state = {
       ...initialState,
-      filteredData: this.props.feed,
-      loading: true,
     }
   }
 
   componentDidMount() {
+    this.props.feeds()
     setTimeout(() => {
-      this.props.feeds()
       this.setState({ loading: false })
     }, 2000)
   }
@@ -44,14 +42,14 @@ class Home extends Component {
     return sortasc(data, value)
   }
 
-
   clear = () => {
     // reset state
     this.setState({ ...initialState, sortedData: this.props.feed })
   }
 
   render() {
-    let { name, loading, score, sort, filteredData, icon } = this.state
+    let { name, loading, score, sort, icon } = this.state
+    let filteredData = Object.values(this.props.feed)
     if (name) {
       filteredData = this.searchField(filteredData, 'name', name)
     }
@@ -103,7 +101,11 @@ class Home extends Component {
                   className="w-100 d-block"
                   title={this.state.title}
                   onSelect={(e) => this.setState({ sort: e, title: ucfirst(e) })}
-                  onToggle={(e) => e ? this.setState({ icon: 'bi bi-arrow-down' }) : this.setState({ icon: 'bi bi-arrow-up' })}
+                  onToggle={(e) =>
+                    e
+                      ? this.setState({ icon: 'bi bi-arrow-down' })
+                      : this.setState({ icon: 'bi bi-arrow-up' })
+                  }
                 >
                   <Dropdown.Item eventKey="first_release_date">First Release Date</Dropdown.Item>
                   <Dropdown.Item eventKey="rating">Score</Dropdown.Item>
