@@ -55,7 +55,7 @@ class Home extends Component {
       filteredData = this.searchField(filteredData, 'name', name)
     }
     if (score) {
-      filteredData = this.searchRange(filteredData, 'score', score)
+      filteredData = this.searchRange(filteredData, 'rating', score)
     }
     if (sort) {
       filteredData = this.sortByField(filteredData, sort)
