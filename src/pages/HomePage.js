@@ -12,7 +12,6 @@ const initialState = {
   score: '',
   sort: '',
   icon: 'bi bi-arrow-up',
-  loading: true,
 }
 
 class Home extends Component {
@@ -20,6 +19,9 @@ class Home extends Component {
     super(props)
     this.state = {
       ...initialState,
+      filteredData: this.props.feed,
+      loading: true,
+
     }
   }
 
@@ -44,13 +46,12 @@ class Home extends Component {
 
   clear = () => {
     // reset state
-    this.setState({ ...initialState, filteredData: this.props.feed })
+    this.setState({ ...initialState, filteredData: this.state.filteredData })
   }
 
   render() {
-    
     let { name, loading, score, sort, icon } = this.state
-    let filteredData = Object.values(this.props.feed)
+    let filteredData = this.state.filteredData
     if (name) {
       filteredData = this.searchField(filteredData, 'name', name)
     }
@@ -60,6 +61,8 @@ class Home extends Component {
     if (sort) {
       filteredData = this.sortByField(filteredData, sort)
     }
+
+  
 
     return (
       <section className="row">
