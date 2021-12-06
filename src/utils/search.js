@@ -12,14 +12,10 @@ export const filtered = (data, key, value) =>
 
 export const range = (data, key, value) => {
   let arr = []
-  if (value != '') {
-    if (value.indexOf('-') > -1) {
-      arr = splithyphen(value)
-      return data.slice(arr[0] - 1, arr[1])
-    } else {
-      return data.slice(0, value)
-    }
+  if (value.indexOf('-') > -1) {
+    arr = splithyphen(value)
+    return data.slice(arr[0] - 1, arr[1])
   } else {
-    return data
+    return data.slice(0, value)
   }
 }

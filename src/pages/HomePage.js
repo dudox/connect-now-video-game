@@ -44,10 +44,11 @@ class Home extends Component {
 
   clear = () => {
     // reset state
-    this.setState({ ...initialState, sortedData: this.props.feed })
+    this.setState({ ...initialState, filteredData: this.props.feed })
   }
 
   render() {
+    
     let { name, loading, score, sort, icon } = this.state
     let filteredData = Object.values(this.props.feed)
     if (name) {
