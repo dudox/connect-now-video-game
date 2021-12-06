@@ -4,56 +4,64 @@ import { feeds } from '../redux/actions/action'
 import { DropdownButton, Dropdown } from 'react-bootstrap'
 import { VideoCard } from '../components/VideoCard'
 import Loader from 'react-loader-spinner'
+import { filtered, sortasc, ucfirst, range } from '../utils'
+
+const initialState = {
+  title: 'Choose an option',
+  name: '',
+  score: '',
+  sort: '',
+  icon: 'bi bi-arrow-up',
+}
 
 class Home extends Component {
   constructor(props) {
     super(props)
+
     this.state = {
-      feed: this.props.feed,
+      ...initialState,
+      filteredData: this.props.feed,
       loading: true,
-      refresh: this.props.feed,
     }
   }
 
   componentDidMount() {
     setTimeout(() => {
       this.props.feeds()
-      this.setState({ loading: false }) // showing the app
+      this.setState({ loading: false })
     }, 2000)
   }
 
-  searchField = (e) => {
-    let conditions = e.target.value
-    var result = []
-    result = this.props.feed.filter((el) => {
-      return el.name.toLowerCase().indexOf(conditions.toLowerCase()) >= 0
-    })
-    this.setState((state) => ({
-      feed: result,
-    }))
+  searchField = (data, key, value) => {
+    return filtered(data, key, value)
   }
 
-  sortByField = (e) => {
-    console.log(e)
-    var result = []
-    result = this.props.feed.sort(function (a, b) {
-      return a[e] == b[e] ? 0 : a[e] < b[e] ? -1 : 1
-    })
-    console.log(result)
-    this.setState((state) => ({
-      feed: result,
-    }))
+  searchRange = (data, key, value) => {
+    return range(data, key, value)
   }
+
+  sortByField = (data, value) => {
+    return sortasc(data, value)
+  }
+
 
   clear = () => {
-    this.name = ''
-    this.score = ''
-    this.setState((state) => ({
-      feed: this.state.refresh,
-    }))
+    // reset state
+    this.setState({ ...initialState, sortedData: this.props.feed })
   }
 
   render() {
+    let { name, loading, score, sort, filteredData, icon } = this.state
+    if (name) {
+      filteredData = this.searchField(filteredData, 'name', name)
+    }
+    if (score) {
+      filteredData = this.searchRange(filteredData, 'score', score)
+    }
+    if (sort) {
+      filteredData = this.sortByField(filteredData, sort)
+    }
+
     return (
       <section className="row">
         <section className="col-12 col-lg-3 p-3 search-panel">
@@ -63,11 +71,11 @@ class Home extends Component {
               <span>Name (contains)</span>
               <div className="search-field">
                 <input
-                  ref={(el) => (this.name = el)}
                   type="text"
                   name="name"
+                  value={this.state.name}
                   className="pl-2 pr-2 w-100 search mt-1"
-                  onChange={(e) => this.searchField(e)}
+                  onChange={(e) => this.setState({ name: e.target.value })}
                 />
               </div>
             </div>
@@ -76,11 +84,11 @@ class Home extends Component {
               <span>Minimum Score</span>
               <div className="search-field">
                 <input
-                  ref={(el) => (this.score = el)}
                   type="text"
                   name="rating"
-                  className="w-100 search mt-1"
-                  onChange={(e) => this.searchField(e)}
+                  className="pl-2 pr-2 w-100 search mt-1"
+                  value={this.state.score}
+                  onChange={(e) => this.setState({ score: e.target.value })}
                 ></input>
               </div>
             </div>
@@ -88,13 +96,14 @@ class Home extends Component {
               <span>Order By</span>
               <div className="order-by mt-1">
                 <div className="sort-direction">
-                  <i className="bi bi-arrow-up"></i>
+                  <i className={`${icon}`}></i>
                 </div>
                 <DropdownButton
                   id="dropdown-basic-button"
                   className="w-100 d-block"
-                  title="Select an option"
-                  onSelect={(e) => this.sortByField(e)}
+                  title={this.state.title}
+                  onSelect={(e) => this.setState({ sort: e, title: ucfirst(e) })}
+                  onToggle={(e) => e ? this.setState({ icon: 'bi bi-arrow-down' }) : this.setState({ icon: 'bi bi-arrow-up' })}
                 >
                   <Dropdown.Item eventKey="first_release_date">First Release Date</Dropdown.Item>
                   <Dropdown.Item eventKey="rating">Score</Dropdown.Item>
@@ -103,7 +112,7 @@ class Home extends Component {
               </div>
             </div>
             <div className="item clear">
-              <button className="button center" onClick={() => this.clear()}>
+              <button type="reset" className="button center" onClick={() => this.clear()}>
                 Clear
               </button>
             </div>
@@ -111,7 +120,7 @@ class Home extends Component {
         </section>
         <section className="col-12 col-lg-9 p-3 videos">
           <div className="content">
-            {this.state.loading ? (
+            {loading ? (
               <Loader
                 className="center"
                 type="ThreeDots"
@@ -119,8 +128,8 @@ class Home extends Component {
                 height={100}
                 width={100}
               />
-            ) : this.state.feed ? (
-              this.state.feed.map((info, key) => {
+            ) : filteredData ? (
+              filteredData.map((info, key) => {
                 return <VideoCard info={info} key={key} index={key} />
               })
             ) : null}
