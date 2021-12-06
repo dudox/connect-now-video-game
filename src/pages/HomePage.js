@@ -21,7 +21,6 @@ class Home extends Component {
       ...initialState,
       filteredData: this.props.feed,
       loading: true,
-
     }
   }
 
@@ -46,7 +45,7 @@ class Home extends Component {
 
   clear = () => {
     // reset state
-    this.setState({ ...initialState, filteredData: this.state.filteredData })
+    this.setState({ ...initialState, filteredData: [...this.props.feed] })
   }
 
   render() {
@@ -61,8 +60,6 @@ class Home extends Component {
     if (sort) {
       filteredData = this.sortByField(filteredData, sort)
     }
-
-  
 
     return (
       <section className="row">
